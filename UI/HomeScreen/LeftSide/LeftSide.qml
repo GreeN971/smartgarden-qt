@@ -82,6 +82,8 @@ Item{
                 color: "green"
                 Grid{
                     anchors.centerIn: parent
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
                     rows:2
                     columns: 2
                     //width: bottomRectangle.width - 100

@@ -29,10 +29,6 @@ public:
     virtual ~Data();
     Data &operator=(const Data&);
     //Q_INVOKABLE SoilIDListModel &getModel();
-    //short int GetTempeture(short int temepture);
-    //short int GetAirHumidity(short int humidity);
-    //std::vector<short int> GetSoilMoistures
-      //  (std::vector<short int> moistures);
 
     void SetTempeture(int temepture);
     void SetAirHumidity(int humidity);

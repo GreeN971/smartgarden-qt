@@ -3,8 +3,8 @@
 EnviromentalData::EnviromentalData(QObject *parent)
     : QObject{parent}
     , m_data(new Data(this))
+    , m_model(new ValveIDListModel(m_valveStatuses, this))
 {
-
 }
 
 void EnviromentalData::SetJson(QJsonObject json)
@@ -28,6 +28,7 @@ QJsonObject EnviromentalData::FilterOutValveStatuses(QJsonObject json)
         vID.value = obj.value("status").toBool();
         m_valveStatuses.emplace_back(vID);
     }
+    emit valveStatusesChanged();
 
     json.remove("valveStatuses");
 

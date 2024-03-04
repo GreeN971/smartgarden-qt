@@ -20,9 +20,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<Data>("SmartGarden", 1, 0, "Data");
     qmlRegisterType<EnviromentalData>("SmartGarden", 1, 0, "EnviromentalData");
     qmlRegisterType<SoilIDListModel>("SmartGarden", 1, 0, "SoilIDListModel");
+    qmlRegisterType<ValveIDListModel>("SmartGarden", 1, 0, "ValveIDListModel");
     QQmlApplicationEngine engine;
 
-    //IJsonDeserialize will be destoyed after engine destruction
+    //IJsonDeserialize will be destroyed after engine destruction
     IJsonDeserialize *test = new IJsonDeserialize(&engine);
     test->CreateQDocument();
 
@@ -37,34 +38,6 @@ int main(int argc, char *argv[])
     //make object instance visible in QML
     engine.rootContext()->setContextProperty("envData", test->GetEnvData());
     engine.load(url);
-
-    /*
-    QFile file(":Resources/resource.json");
-    file.open(QIODevice::ReadOnly);
-    QByteArray bytes = file.readAll();
-    file.close();
-
-    QJsonParseError jsonError;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(bytes, &jsonError);
-
-    if(jsonError.error != QJsonParseError::NoError)
-        qDebug() << "Json failed: " << jsonError.errorString().toStdU32String();
-
-    QJsonObject rootObj = jsonDoc.object();
-    qDebug() << rootObj;
-    QJsonObject dataObj = rootObj["ESPData"].toObject();
-
-    int temp = dataObj.value("tempeture").toInt();
-    int airHum = dataObj.value("airHumidity").toInt();
-    int soilMoistureOne = dataObj.value("soilMoistureOne").toInt();
-    int soilMoistureTwo = dataObj.value("soilMoistureTwo").toInt();
-
-        //for(int i = 0; i < dataRoot.size(); i++
-    qDebug() << "Temp is - " << airHum << soilMoistureOne;
-
-    */
-
-
 
     return app.exec();
 }

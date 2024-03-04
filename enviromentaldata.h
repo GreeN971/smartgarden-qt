@@ -2,6 +2,8 @@
 #define ENVIROMENTALDATA_H
 
 #include "data.h"
+#include "ValveID.h"
+#include "valveidlistmodel.h"
 #include <QObject>
 #include <QJsonObject>
 #include <QDebug>
@@ -9,34 +11,29 @@
 #include <QQmlContext>
 #include <QQmlApplicationEngine>
 
-struct ValveID {
-    int id;
-    bool value;
-};
-
 class EnviromentalData : public QObject
 {
     Q_OBJECT
-    //Q_PROPERTY(QJsonObject jsonObject MEMBER
-     //              m_json NOTIFY SendJson)
-    /*Q_PROPERTY(std::vector<ValveID> valveStatuses
-                   MEMBER m_valveStatuses NOTIFY UpdateValveStatuses)*/
-
+    Q_PROPERTY(ValveIDListModel *valveIDListModel
+                   MEMBER m_model NOTIFY valveStatusesChanged)
     Q_PROPERTY(Data *data MEMBER m_data NOTIFY dataChanged)
 public:
     explicit EnviromentalData(QObject *parent = nullptr);
     // Q_INVOKABLE - flag that allows to call function in QML
+
     void SetJson(QJsonObject json);
     QJsonObject FilterOutValveStatuses(QJsonObject json);
     void FromJson(QJsonObject json);
-    //Data &getData();
+
 
 signals:
     void dataChanged();
+    void valveStatusesChanged();
 private:
     QJsonObject m_json;
     Data *m_data;
-    std::vector<ValveID> m_valveStatuses;
+    QList<ValveID> m_valveStatuses;
+    ValveIDListModel *m_model;
 };
 
 #endif // ENVIROMENTALDATA_H

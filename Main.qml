@@ -12,7 +12,8 @@ Window {
     minimumWidth: 840
     visible: true
     title: qsTr("Smart Garden")
-    Row {
+    RowLayout {
+        anchors.fill: parent
         spacing: 2
         Loader{
             id: leftLoader

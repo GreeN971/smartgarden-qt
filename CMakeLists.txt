@@ -33,6 +33,8 @@ qt_add_qml_module(appSmartGardenV2
     SOURCES ijsondeserialize.h ijsondeserialize.cpp
     SOURCES soilidlistmodel.h soilidlistmodel.cpp
     SOURCES SoilID.h
+    SOURCES valveidlistmodel.h valveidlistmodel.cpp
+    SOURCES ValveID.h
     #RESOURCES resources.qrc
 )
 

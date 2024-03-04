@@ -13,6 +13,38 @@ Item {
         height: parent.height
         color: "grey"
         Column{
+
+            ListView{
+                id:valveView
+                anchors.fill: parent
+                model: envData.valveIDListModel
+                clip:true
+                Component.onCompleted: console.log(cacheBuffer);
+                delegate:
+                    Column
+                        {
+                        Rectangle{
+                            height:80 //mainRectangle.height / 2
+                            width: mainRectangle.width / 2
+                            Text{
+                                font.pixelSize: 30
+                                text: valveID
+                            }
+                        }
+
+                        Rectangle{
+                            height:80
+                            width: mainRectangle.width / 2
+                            Text{
+                                font.pixelSize: 30
+                                text: valveValue
+                            }
+                        }
+                    }
+            }
+
+
+            /*
             Rectangle
             {
 
@@ -70,47 +102,7 @@ Item {
                 height: soilMeterImg.height
                 width: mainRectangle.width
             }
-
-            Grid{
-                columns: 2
-                spacing: 2
-                Rectangle{
-                    height:80 //mainRectangle.height / 2
-                    width: mainRectangle.width / 2
-                    Text{
-                        font.pixelSize: 30
-                        text: qsTr("Valve 1 status")
-                    }
-                }
-
-                Rectangle{
-                    height:80
-                    width: mainRectangle.width / 2
-                    Text{
-                        font.pixelSize: 30
-                        text: qsTr("On")
-                    }
-                }
-
-                Rectangle{
-                    height:80 //mainRectangle.height / 2
-                    width: mainRectangle.width / 2
-
-                    Text{
-                        font.pixelSize: 30
-                        text: qsTr("Valve 2 status")
-                    }
-                }
-
-                Rectangle{
-                    height:80
-                    width: mainRectangle.width / 2
-                    Text{
-                        font.pixelSize: 30
-                        text: qsTr("Off")
-                    }
-                }
-            }
+            */
         }
     }
 }
