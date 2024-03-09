@@ -11,6 +11,7 @@
 #include <ijsondeserialize.h>
 #include <QQmlContext>
 #include "enviromentaldata.h"
+#include "curl/curl.h"
 
 
 int main(int argc, char *argv[])

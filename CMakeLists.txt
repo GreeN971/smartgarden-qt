@@ -54,8 +54,21 @@ set_target_properties(appSmartGardenV2 PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+include("${CMAKE_CURRENT_SOURCE_DIR}/Cmake/FetchCPM.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/Cmake/CPM/CPM.cmake")
+if(NOT WIN32)
+    set(CPM_LOCAL_PACKAGES_ONLY True)
+endif()
+CPMAddPackage(NAME curl
+    GITHUB_REPOSITORY curl/curl
+    VERSION 8.6.0
+    GIT_TAG "curl-8_6_0"
+    OPTIONS
+        "BUILD_STATIC_LIBS ON"
+        "BUILD_SHARED_LIBS OFF")
+
 target_link_libraries(appSmartGardenV2
-    PRIVATE Qt6::Quick Qt6::Core
+    PRIVATE Qt6::Quick Qt6::Core libcurl
 )
 
 include(GNUInstallDirs)

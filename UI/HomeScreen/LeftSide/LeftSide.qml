@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 Item{
     Rectangle
@@ -49,6 +50,7 @@ Item{
                                id: temperatureText
                                text: envData.data.temperature
                                font.pixelSize: 30
+                               anchors.centerIn: parent
                             }
                         }
 
@@ -69,6 +71,7 @@ Item{
                                id:humidityText
                                text: envData.data.airHumidity
                                font.pixelSize: 30
+                               anchors.centerIn: parent
                             }
                         }
                     }
@@ -86,21 +89,23 @@ Item{
                     anchors.horizontalCenter: parent.horizontalCenter
                     rows:2
                     columns: 2
-                    //width: bottomRectangle.width - 100
-                    //height: bottomRectangle.height - 100
-
                     Rectangle
                     {
                         id: switchRecOne
                         width: bottomRectangle.width / 6
                         height: bottomRectangle.height / 2
-                        Switch{
+                        Switch {
                             anchors.centerIn: switchRecOne
-                            icon.color: "red"
+                            checked: true
                             icon.height: 60
                             width: 60
+                            background: Rectangle {
+                                border.width: 4
+                                radius: height / 2
+                            }
+
+                            }
                         }
-                    }
                     Rectangle{
                         id: textRecOne
                         width: bottomRectangle.width / 2
@@ -113,6 +118,7 @@ Item{
                             font.pixelSize: 30
                         }
                     }
+
                     Rectangle
                     {
                         id: switchRecTwo
@@ -120,9 +126,7 @@ Item{
                         height: bottomRectangle.height / 2
                         Switch{
                             id: wateringOverride
-
                             signal woStatusChanged()
-
                             anchors.centerIn:switchRecTwo
                             icon.color: "red"
                             icon.height: 60
