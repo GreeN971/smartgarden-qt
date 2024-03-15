@@ -35,6 +35,8 @@ qt_add_qml_module(appSmartGardenV2
     SOURCES SoilID.h
     SOURCES valveidlistmodel.h valveidlistmodel.cpp
     SOURCES ValveID.h
+    SOURCES
+    SOURCES httpclient.h httpclient.cpp
     #RESOURCES resources.qrc
 )
 
@@ -65,7 +67,8 @@ CPMAddPackage(NAME curl
     GIT_TAG "curl-8_6_0"
     OPTIONS
         "BUILD_STATIC_LIBS ON"
-        "BUILD_SHARED_LIBS OFF")
+        "BUILD_SHARED_LIBS OFF"
+        "CURL_CA_PATH auto")
 
 target_link_libraries(appSmartGardenV2
     PRIVATE Qt6::Quick Qt6::Core libcurl

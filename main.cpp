@@ -11,8 +11,10 @@
 #include <ijsondeserialize.h>
 #include <QQmlContext>
 #include "enviromentaldata.h"
-#include "curl/curl.h"
+#include "httpclient.h"
 
+#define CONTENT_TYPE "Content-Type"
+#define CONTENT_TYPE_JSON "application/json"
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +29,14 @@ int main(int argc, char *argv[])
     //IJsonDeserialize will be destroyed after engine destruction
     IJsonDeserialize *test = new IJsonDeserialize(&engine);
     test->CreateQDocument();
+
+    HTTPClient client;
+    HTTPClientRequest req;
+    req.uri = "http://reqres.in/api/users?page=2";
+    req.reqType = httpVerb::GET;
+    auto resp = client.Send(req);
+    qDebug() << reinterpret_cast<const char*>(resp.data.data());
+    qDebug() << resp.status;
 
     const QUrl url(u"qrc:/SmartGardenV2/Main.qml"_qs);
     QObject::connect(
