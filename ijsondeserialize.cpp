@@ -3,32 +3,23 @@
 
 IJsonDeserialize::IJsonDeserialize(QObject *parent)
     : QObject(parent)
-    , m_document{CreateQDocument()}
-    , m_jsonObj {CreateJsonObj()}
 {
-    m_environmentalData = new EnviromentalData(this);
-    m_environmentalData->SetJson(m_jsonObj);
-    m_environmentalData->FilterOutValveStatuses(m_jsonObj);
+    m_environmentalData = new EnviromentalData(m_jsonObj, this);
 }
 
-QByteArray IJsonDeserialize::ReadDocument()
+void IJsonDeserialize::FromJson(QString &str)
 {
-    QFile file(":Resources/resource.json");
-    file.open(QIODevice::ReadOnly);
-    QByteArray bytes = file.readAll();
-    file.close();
-
-    return bytes;
-}
-
-QJsonDocument IJsonDeserialize::CreateQDocument()
-{
-    QJsonParseError jsonError;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(ReadDocument(), &jsonError);
+     QJsonParseError jsonError;
+    m_document = QJsonDocument::fromJson(str.toLocal8Bit() ,&jsonError);
 
     if(jsonError.error != QJsonParseError::NoError)
-        qDebug() << "Json failed: " << jsonError.errorString().toStdU32String();
-    return jsonDoc;
+        qDebug() << "Json failed: " << jsonError.errorString();
+    else
+    {
+        m_jsonObj = CreateJsonObj();
+        m_environmentalData->update();
+    }
+
 }
 
 QJsonObject IJsonDeserialize::CreateJsonObj()
@@ -36,11 +27,6 @@ QJsonObject IJsonDeserialize::CreateJsonObj()
     QJsonObject rootObj = m_document.object();
     QJsonObject obj = rootObj["ESPData"].toObject();
     return obj;
-}
-
-void IJsonDeserialize::ReadJson()
-{
-    //qDebug() <<  m_jsonObj;
 }
 
 EnviromentalData *IJsonDeserialize::GetEnvData()

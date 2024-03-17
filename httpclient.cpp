@@ -17,6 +17,9 @@ std::unique_ptr<CURL, void(*)(CURL *)> HTTPClient::Initialize()
     if (status != CURLE_OK)
         throw std::runtime_error("Setting write function failed");
 
+    status = curl_easy_setopt(curl.get(), CURLOPT_TIMEOUT_MS, 5000);
+    if (status != CURLE_OK)
+        throw std::runtime_error("TIMEOUT");
 
     return curl;
 }

@@ -18,10 +18,9 @@ class EnviromentalData : public QObject
                    MEMBER m_model NOTIFY valveStatusesChanged)
     Q_PROPERTY(Data *data MEMBER m_data NOTIFY dataChanged)
 public:
-    explicit EnviromentalData(QObject *parent = nullptr);
+    explicit EnviromentalData(QJsonObject &obj,QObject *parent = nullptr);
     // Q_INVOKABLE - flag that allows to call function in QML
 
-    void SetJson(QJsonObject json);
     QJsonObject FilterOutValveStatuses(QJsonObject json);
     void FromJson(QJsonObject json);
 
@@ -29,8 +28,11 @@ public:
 signals:
     void dataChanged();
     void valveStatusesChanged();
+    void jsonChanged();
+public slots:
+    void update();
 private:
-    QJsonObject m_json;
+    QJsonObject &m_json;
     Data *m_data;
     QList<ValveID> m_valveStatuses;
     ValveIDListModel *m_model;

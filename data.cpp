@@ -1,4 +1,5 @@
 #include "data.h"
+#include "worker.h"
 
 Data::Data(QObject *parent)
     : QObject{parent}
@@ -6,6 +7,10 @@ Data::Data(QObject *parent)
     , m_airHumidity(0)
     , m_model(new SoilIDListModel(m_soilData, this))
 {
+    //Worker *worker = new Worker();
+    //worker->moveToThread(&workerThread);
+    //connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
+    //connect(this, )
 }
 
 Data &Data::operator=(const Data &data)
@@ -21,7 +26,7 @@ Data &Data::operator=(const Data &data)
 void Data::SetTempeture(int tempeture)
 {
     m_tempeture = tempeture;
-    //emit tempetureChanged();
+    emit tempetureChanged();
 }
 
 void Data::SetAirHumidity(int humi)
@@ -48,7 +53,7 @@ void Data::SetSoilMoistures()
 
 bool Data::ValidateJsonObjects()
 {
-    std::vector<QString> expectedJsonObjects = {"tempeture", "airHumidity",
+    std::vector<QString> expectedJsonObjects = {"tempeture", "airhumidity",
                                                 "soilMoistureOne", "soilMoistureTwo"};
     size_t len = sizeof(expectedJsonObjects) / sizeof(QString);
 
@@ -75,22 +80,18 @@ bool Data::ValidateJsonObjects()
 void Data::FromJson(QJsonObject json)
 {
     m_filteredJson = json;
-
+    m_model->layoutAboutToBeChanged();
     //idealne asi nez ty data rozeslu tak pridat ten check zda jsou validni
     SetTempeture(m_filteredJson.value("tempeture").toInt());
 
-    SetAirHumidity(m_filteredJson.value("airHumidity").toInt());
+    SetAirHumidity(m_filteredJson.value("airhumidity").toInt());
 
     SetSoilMoistures();
 
     for(const auto &soil : m_soilData)
         qDebug() << soil.id << soil.value;
 
-    //Add check if JSON is empty
-    //qDebug() << m_soilMoistureOne;
-
-    qDebug() << m_filteredJson;
-
+    m_model->layoutChanged();
 }
 
 Data::~Data()

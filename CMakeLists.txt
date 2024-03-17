@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(SmartGardenV2 VERSION 0.1 LANGUAGES CXX)
+project(SmartGardenV2 VERSION 0.1 LANGUAGES CXX C)
 
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU,LCC>")
 set(msvc_cxx "$<COMPILE_LANG_AND_ID:CXX,MSVC>")
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Core)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Core Widgets)
 
 qt_standard_project_setup()
 
@@ -37,6 +37,8 @@ qt_add_qml_module(appSmartGardenV2
     SOURCES ValveID.h
     SOURCES
     SOURCES httpclient.h httpclient.cpp
+    SOURCES provider.h provider.cpp
+    SOURCES worker.h worker.cpp
     #RESOURCES resources.qrc
 )
 
@@ -61,7 +63,8 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/Cmake/CPM/CPM.cmake")
 if(NOT WIN32)
     set(CPM_LOCAL_PACKAGES_ONLY True)
 endif()
-CPMAddPackage(NAME curl
+
+CPMAddPackage(NAME CURL
     GITHUB_REPOSITORY curl/curl
     VERSION 8.6.0
     GIT_TAG "curl-8_6_0"
@@ -69,10 +72,18 @@ CPMAddPackage(NAME curl
         "BUILD_STATIC_LIBS ON"
         "BUILD_SHARED_LIBS OFF"
         "CURL_CA_PATH auto")
+#set(CURL_LIBRARY /usr/lib/x86_64-linux-gnu/libcurl.so)
+#set(CURL_INCLUDE_DIR /usr/include/x86_64-linux-gnu)
 
-target_link_libraries(appSmartGardenV2
-    PRIVATE Qt6::Quick Qt6::Core libcurl
-)
+if(WIN32)
+    target_link_libraries(appSmartGardenV2
+        PRIVATE Qt6::Quick Qt6::Core Qt6::Widgets libcurl
+    )
+else()
+    target_link_libraries(appSmartGardenV2
+        PRIVATE Qt6::Quick Qt6::Core Qt6::Widgets CURL::libcurl
+    )
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS appSmartGardenV2

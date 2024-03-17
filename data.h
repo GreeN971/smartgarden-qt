@@ -9,6 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QList>
 #include <QDebug>
+#include <QThread>
 #include "SoilID.h"
 #include "soilidlistmodel.h"
 
@@ -24,6 +25,7 @@ class Data : public QObject
     Q_PROPERTY(int temperature MEMBER m_tempeture NOTIFY tempetureChanged);
     Q_PROPERTY(int airHumidity MEMBER m_airHumidity NOTIFY AirHumidityChanged)
     Q_PROPERTY(SoilIDListModel *soilIDListModel MEMBER m_model NOTIFY soilMoisturesChanged)
+    QThread workerThread;
 public:
     explicit Data(QObject *parent = nullptr);
     virtual ~Data();

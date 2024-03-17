@@ -1,23 +1,22 @@
 #include "enviromentaldata.h"
 
-EnviromentalData::EnviromentalData(QObject *parent)
+EnviromentalData::EnviromentalData(QJsonObject &obj, QObject *parent)
     : QObject{parent}
+    , m_json(obj)
     , m_data(new Data(this))
     , m_model(new ValveIDListModel(m_valveStatuses, this))
 {
+    connect(this, &EnviromentalData::jsonChanged, this, &EnviromentalData::update);
 }
 
-void EnviromentalData::SetJson(QJsonObject json)
+void EnviromentalData::update()
 {
-    if(json != m_json)
-    {
-        m_json = json;
-        //qDebug() << m_json.size();
-    }
+    FilterOutValveStatuses(m_json);
 }
 
 QJsonObject EnviromentalData::FilterOutValveStatuses(QJsonObject json)
 {
+    m_model->layoutAboutToBeChanged();
     m_valveStatuses.clear();
     const QJsonArray &arr = json.value("valveStatuses").toArray();
     for(const QJsonValue &valveStatus : arr)
@@ -28,12 +27,13 @@ QJsonObject EnviromentalData::FilterOutValveStatuses(QJsonObject json)
         vID.value = obj.value("status").toBool();
         m_valveStatuses.emplace_back(vID);
     }
+
     emit valveStatusesChanged();
 
-    json.remove("valveStatuses");
-
+    json.remove("valveStatuses");  
     FromJson(json);
 
+    m_model->layoutChanged();
     return json;
 }
 

@@ -10,8 +10,9 @@
 #include <QResource>
 #include <ijsondeserialize.h>
 #include <QQmlContext>
+#include <QTimer>
 #include "enviromentaldata.h"
-#include "httpclient.h"
+#include "provider.h"
 
 #define CONTENT_TYPE "Content-Type"
 #define CONTENT_TYPE_JSON "application/json"
@@ -27,16 +28,26 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     //IJsonDeserialize will be destroyed after engine destruction
-    IJsonDeserialize *test = new IJsonDeserialize(&engine);
-    test->CreateQDocument();
+    IJsonDeserialize *desJson = new IJsonDeserialize(&engine);
+    //test->FromJson(pro.GetData());
 
-    HTTPClient client;
-    HTTPClientRequest req;
-    req.uri = "http://reqres.in/api/users?page=2";
-    req.reqType = httpVerb::GET;
-    auto resp = client.Send(req);
-    qDebug() << reinterpret_cast<const char*>(resp.data.data());
-    qDebug() << resp.status;
+    QTimer *timer = new QTimer(&engine);
+    timer->connect(timer, &QTimer::timeout, [desJson]
+    {
+       try
+       {
+        Provider provider("http://192.168.11.28/espdata");
+        desJson->FromJson(provider.GetData());
+       }
+       catch (const std::runtime_error &e)
+       {
+        qDebug() << e.what();
+       }
+
+    });
+    timer->setInterval(5000);
+
+    //{"http://192.168.11.28/espdata"};
 
     const QUrl url(u"qrc:/SmartGardenV2/Main.qml"_qs);
     QObject::connect(
@@ -45,9 +56,9 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-
+    timer->start();
     //make object instance visible in QML
-    engine.rootContext()->setContextProperty("envData", test->GetEnvData());
+    engine.rootContext()->setContextProperty("envData", desJson->GetEnvData());
     engine.load(url);
 
     return app.exec();

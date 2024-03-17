@@ -15,10 +15,10 @@ class IJsonDeserialize : public QObject
 public:
     IJsonDeserialize(QObject *obj = nullptr);
     IJsonDeserialize(QJsonObject obj);
-    QByteArray ReadDocument();
+    //void ReadDocument(char *data);
     QJsonDocument CreateQDocument();
     QJsonObject CreateJsonObj();
-    void ReadJson();
+    void FromJson(QString &str);
 
     EnviromentalData *GetEnvData();
 
