@@ -82,75 +82,129 @@ Item{
                 id:bottomRectangle
                 height: mainRectangle.height / 2
                 width: mainRectangle.width
+
                 color: "green"
-                Grid{
-                    anchors.centerIn: parent
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    rows:2
-                    columns: 2
+                ColumnLayout{
+                    id: gridL
+                    spacing: 0
                     Rectangle
                     {
-                        id: switchRecOne
-                        width: bottomRectangle.width / 6
-                        height: bottomRectangle.height / 2
-                        Switch {
-                            anchors.centerIn: switchRecOne
-                            checked: true
-                            icon.height: 60
-                            width: 60
-                            background: Rectangle {
-                                border.width: 4
-                                radius: height / 2
+                        width: bottomRectangle.width
+                        height: 50
+                        color: "orange"
+                        RowLayout
+                        {
+                            anchors.fill: parent
+                            Text {
+                                id: killSwitchText
+                                text: qsTr("Kill Switch")
+                                color: "red"
+                                font.pixelSize: 30
                             }
-
-                            }
-                        }
-                    Rectangle{
-                        id: textRecOne
-                        width: bottomRectangle.width / 2
-                        height: bottomRectangle.height / 2
-                        Text {
-                            anchors.centerIn:textRecOne
-                            id: killSwitchText
-                            text: qsTr("Kill Switch")
-                            color: "red"
-                            font.pixelSize: 30
-                        }
-                    }
-
-                    Rectangle
-                    {
-                        id: switchRecTwo
-                        width: bottomRectangle.width / 6
-                        height: bottomRectangle.height / 2
-                        Switch{
-                            id: wateringOverride
-                            signal woStatusChanged()
-                            anchors.centerIn:switchRecTwo
-                            icon.color: "red"
-                            icon.height: 60
-                            width: 60
-                            onClicked:
-                            function()
-                            {
-                                manualWateringText.color.r = Math.random()
-                                manualWateringText.color.g = Math.random()
-                                manualWateringText.color.b = Math.random()
-                                console.log("Status has changed to" + (wateringOverride.checked? "On" : "Off"))
+                            Switch {
+                                Layout.alignment: Qt.AlignRight
+                                id: switchOne
+                                //anchors.centerIn: switchRecOne
+                                checked: true
+                                icon.height: 30
+                                width: 30
                             }
                         }
                     }
-                    Rectangle{
-                        id:textRecTwo
-                        width: bottomRectangle.width / 2
-                        height: bottomRectangle.height / 2
-                        Text {
-                            anchors.centerIn:textRecTwo
-                            id: manualWateringText
-                            text: qsTr("Manual watering")
-                            color: "red"
-                            font.pixelSize: 30
+                    Rectangle
+                    {
+                        width: bottomRectangle.width
+                        height: 50
+                        color: "blue"
+                        RowLayout
+                        {
+                            anchors.fill: parent
+                            Text {
+                                id: wateringSwitchText
+                                text: qsTr("Time based watering")
+                                color: "red"
+                                font.pixelSize: 30
+                            }
+                            Switch {
+                                id: wateringSwich
+                                Layout.alignment: Qt.AlignRight
+                                //anchors.centerIn: switchRecOne
+                                checked: true
+                                icon.height: 30
+                                width: 30
+                            }
+                        }
+                    }
+                    Rectangle
+                    {
+                        width: bottomRectangle.width
+                        height: bottomRectangle.height - 100
+                        color: "yellow"
+                        RowLayout {
+                            x: -50
+                            anchors.centerIn: parent
+                            //Layout.alignment: Qt.AlignHCenter
+                            SpinBox {
+                                id: hourSpinBox
+                                from: 0
+                                to: 23
+                                //prefix: "Hour: "
+                                value: 12 // Default value for demonstration
+                                transform: Rotation {
+                                    origin.x: 50
+                                    origin.y: 50
+                                    angle: -90
+                                }
+                                background: Rectangle
+                                {
+                                    color: "transparent"
+                                }
+                                contentItem: Text
+                                {
+                                    text: hourSpinBox.value
+                                    font.pixelSize: 30
+                                    rotation: 90
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    transformOrigin: Item.Center
+                                }
+                            }
+                            Image {
+                                source: "qrc:/SmartGardenV2/UI/Assets/colon.png"
+                                height: 20
+                                width:5
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                transformOrigin: Item.Center
+                            }
+
+                            SpinBox {
+                                id: minuteSpinBox
+                                //Layout.fillHeight: true
+                                from: 0
+                                to: 59
+                                //prefix: "Minute: "
+                                value: 30 // Default value for demonstration
+                                transform: Rotation {
+                                    origin.x: 50
+                                    origin.y: 50
+                                    angle: -90
+                                }
+                                background: Rectangle
+                                {
+                                    transformOrigin: Item.Center
+                                    color: "transparent"
+                                }
+                                contentItem: Text
+                                {
+                                    text: minuteSpinBox.value
+                                    font.pixelSize: 30
+                                    rotation: 90
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    transformOrigin: Item.Center
+                                }
+                            }
                         }
                     }
                 }

@@ -1,15 +1,15 @@
-#include "ijsondeserialize.h"
+#include "Context.h"
 #include "enviromentaldata.h"
 
-IJsonDeserialize::IJsonDeserialize(QObject *parent)
+Context::Context(QObject *parent)
     : QObject(parent)
 {
     m_environmentalData = new EnviromentalData(m_jsonObj, this);
 }
 
-void IJsonDeserialize::FromJson(QString &str)
+void Context::FromJson(QString &str)
 {
-     QJsonParseError jsonError;
+    QJsonParseError jsonError;
     m_document = QJsonDocument::fromJson(str.toLocal8Bit() ,&jsonError);
 
     if(jsonError.error != QJsonParseError::NoError)
@@ -22,14 +22,14 @@ void IJsonDeserialize::FromJson(QString &str)
 
 }
 
-QJsonObject IJsonDeserialize::CreateJsonObj()
+QJsonObject Context::CreateJsonObj()
 {
     QJsonObject rootObj = m_document.object();
     QJsonObject obj = rootObj["ESPData"].toObject();
     return obj;
 }
 
-EnviromentalData *IJsonDeserialize::GetEnvData()
+EnviromentalData *Context::GetEnvData()
 {
     return m_environmentalData;
 }

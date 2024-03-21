@@ -8,7 +8,7 @@
 #include <QString>
 #include <QDebug>
 #include <QResource>
-#include <ijsondeserialize.h>
+#include <Context.h>
 #include <QQmlContext>
 #include <QTimer>
 #include "enviromentaldata.h"
@@ -26,9 +26,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<SoilIDListModel>("SmartGarden", 1, 0, "SoilIDListModel");
     qmlRegisterType<ValveIDListModel>("SmartGarden", 1, 0, "ValveIDListModel");
     QQmlApplicationEngine engine;
-
-    //IJsonDeserialize will be destroyed after engine destruction
-    IJsonDeserialize *desJson = new IJsonDeserialize(&engine);
+    
+    //Context will be destroyed after engine destruction
+    Context *desJson = new Context(&engine);
     //test->FromJson(pro.GetData());
 
     QTimer *timer = new QTimer(&engine);
@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
        {
         qDebug() << e.what();
        }
-
     });
     timer->setInterval(5000);
 

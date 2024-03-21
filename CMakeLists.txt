@@ -28,9 +28,10 @@ qt_add_qml_module(appSmartGardenV2
     RESOURCES UI/Assets/humidity.png
     RESOURCES UI/Assets/meter.png
     RESOURCES UI/Assets/water-control.png
+    RESOURCES UI/Assets/colon.png
     SOURCES data.h data.cpp
     SOURCES enviromentaldata.h enviromentaldata.cpp
-    SOURCES ijsondeserialize.h ijsondeserialize.cpp
+    SOURCES Context.h Context.cpp
     SOURCES soilidlistmodel.h soilidlistmodel.cpp
     SOURCES SoilID.h
     SOURCES valveidlistmodel.h valveidlistmodel.cpp

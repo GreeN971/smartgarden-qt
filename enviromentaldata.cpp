@@ -30,7 +30,7 @@ QJsonObject EnviromentalData::FilterOutValveStatuses(QJsonObject json)
 
     emit valveStatusesChanged();
 
-    json.remove("valveStatuses");  
+    json.remove("valveStatuses");
     FromJson(json);
 
     m_model->layoutChanged();

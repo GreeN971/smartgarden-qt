@@ -10,11 +10,11 @@
 #include <QResource>
 #include <QObject>
 
-class IJsonDeserialize : public QObject
+class Context : public QObject
 {
 public:
-    IJsonDeserialize(QObject *obj = nullptr);
-    IJsonDeserialize(QJsonObject obj);
+    Context(QObject *obj = nullptr);
+    Context(QJsonObject obj);
     //void ReadDocument(char *data);
     QJsonDocument CreateQDocument();
     QJsonObject CreateJsonObj();

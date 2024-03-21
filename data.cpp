@@ -81,6 +81,9 @@ void Data::FromJson(QJsonObject json)
 {
     m_filteredJson = json;
     m_model->layoutAboutToBeChanged();
+
+    ValidateJsonObjects();
+
     //idealne asi nez ty data rozeslu tak pridat ten check zda jsou validni
     SetTempeture(m_filteredJson.value("tempeture").toInt());
 
