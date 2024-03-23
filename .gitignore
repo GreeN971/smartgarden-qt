@@ -86,4 +86,6 @@ compile_commands.json
 
 *_qmlcache.qrc
 
+installers/*
+
 Cmake/CPM/*

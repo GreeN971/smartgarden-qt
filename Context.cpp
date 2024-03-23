@@ -1,5 +1,6 @@
 #include "Context.h"
 #include "enviromentaldata.h"
+#include "QFile"
 
 Context::Context(QObject *parent)
     : QObject(parent)
@@ -19,6 +20,32 @@ void Context::FromJson(QString &str)
         m_jsonObj = CreateJsonObj();
         m_environmentalData->update();
     }
+
+}
+
+std::string Context::Configure()
+{
+    QJsonParseError jsonError;
+    QFile file("configure.json");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        throw ConfigureFileErr("configure.json file not found");
+    QByteArray qArr = file.readAll();
+
+    QJsonDocument doc = QJsonDocument::fromJson(qArr, &jsonError);
+    if(jsonError.error != QJsonParseError::NoError)
+        throw ConfigureFileErr("configure.json file parse failed");
+
+    QJsonObject rootObject = doc.object();
+    if (!rootObject.contains("IPAddress"))
+        throw ConfigureFileErr("configure.json missing IPAddress parameter");
+    QJsonObject obj = rootObject["IPAddress"].toObject();
+    std::string address = rootObject.value("time").toVariant().toString().toStdString();
+    return address;
+}
+
+ConfigureFileErr::ConfigureFileErr(std::string_view str)
+    : std::runtime_error(str.data())
+{
 
 }
 

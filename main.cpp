@@ -11,6 +11,7 @@
 #include <Context.h>
 #include <QQmlContext>
 #include <QTimer>
+#include <io.h>
 #include "enviromentaldata.h"
 #include "provider.h"
 
@@ -26,39 +27,57 @@ int main(int argc, char *argv[])
     qmlRegisterType<SoilIDListModel>("SmartGarden", 1, 0, "SoilIDListModel");
     qmlRegisterType<ValveIDListModel>("SmartGarden", 1, 0, "ValveIDListModel");
     QQmlApplicationEngine engine;
+    engine.addImportPath("qrc:/");
+
     
     //Context will be destroyed after engine destruction
     Context *desJson = new Context(&engine);
     //test->FromJson(pro.GetData());
 
     QTimer *timer = new QTimer(&engine);
-    timer->connect(timer, &QTimer::timeout, [desJson]
+    timer->connect(timer, &QTimer::timeout, [desJson, &app]
     {
-       try
-       {
-        Provider provider("http://192.168.11.28/espdata");
-        desJson->FromJson(provider.GetData());
-       }
-       catch (const std::runtime_error &e)
-       {
-        qDebug() << e.what();
-       }
+        try
+        {
+            Provider provider(desJson->Configure());
+            desJson->FromJson(provider.GetData());
+        }
+        catch(const ConfigureFileErr &e)
+        {
+            QFile file("log.txt");
+            file.open(QFile::Append);
+            file.write(e.what());
+            file.write("\n");
+            file.close();
+            app.exit(-1);
+        }
+        catch (const std::runtime_error &e)
+        {
+            qDebug() << e.what();
+        }
     });
     timer->setInterval(5000);
 
     //{"http://192.168.11.28/espdata"};
 
-    const QUrl url(u"qrc:/SmartGardenV2/Main.qml"_qs);
+    const QUrl url(u"qrc:/qml/Main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
         &app,
-        []() { QCoreApplication::exit(-1); },
+        [](const QUrl &url) {
+            QFile file("log.txt");
+            file.open(QFile::Append);
+            file.write("failed to load QML");
+            file.write("\n");
+            file.close();
+            QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     timer->start();
     //make object instance visible in QML
     engine.rootContext()->setContextProperty("envData", desJson->GetEnvData());
     engine.load(url);
+
 
     return app.exec();
 }

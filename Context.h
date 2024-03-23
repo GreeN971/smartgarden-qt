@@ -9,6 +9,13 @@
 #include <QDebug>
 #include <QResource>
 #include <QObject>
+#include <string_view>
+
+class ConfigureFileErr : public std::runtime_error
+{
+public:
+    ConfigureFileErr(std::string_view str);
+};
 
 class Context : public QObject
 {
@@ -19,6 +26,7 @@ public:
     QJsonDocument CreateQDocument();
     QJsonObject CreateJsonObj();
     void FromJson(QString &str);
+    std::string Configure();
 
     EnviromentalData *GetEnvData();
 

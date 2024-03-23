@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/UI/HomeScreen/RightSide/RightSide.qml</file>
+        <file>qml/UI/HomeScreen/LeftSide/LeftSide.qml</file>
+        <file>qml/UI/Assets/colon.png</file>
+        <file>qml/UI/Assets/humidity.png</file>
+        <file>qml/UI/Assets/meter.png</file>
+        <file>qml/UI/Assets/thermometer.png</file>
+        <file>qml/UI/Assets/water-control.png</file>
+        <file>qml/Main.qml</file>
+    </qresource>
+</RCC>

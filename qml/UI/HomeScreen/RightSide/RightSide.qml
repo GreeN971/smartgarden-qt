@@ -15,7 +15,7 @@ ColumnLayout
             Layout.alignment: Qt.AlignTop
             Image{
                 id: meter
-                source: "qrc:/SmartGardenV2/UI/Assets/meter.png"
+                source: "qrc:/qml/UI/Assets/meter.png"
             }
             Layout.fillWidth: true
             color: "lightblue"
@@ -74,7 +74,7 @@ ColumnLayout
                 Layout.alignment: Qt.AlignTop
                 Image{
                     id: valve
-                    source: "qrc:/SmartGardenV2/UI/Assets/water-control.png"
+                    source: "qrc:/qml/UI/Assets/water-control.png"
                 }
                 Layout.fillWidth: true
                 color: "lightblue"

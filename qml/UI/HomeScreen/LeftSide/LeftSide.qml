@@ -38,7 +38,7 @@ Item{
                             Image {
                                height: 60
                                width: 60
-                               source: "qrc:/SmartGardenV2/UI/Assets/thermometer.png"
+                               source: "qrc:/qml/UI/Assets/thermometer.png"
                             }
                         }
 
@@ -60,7 +60,7 @@ Item{
                             Image {
                                height: 60
                                width: 60
-                               source: "qrc:/SmartGardenV2/UI/Assets/humidity.png"
+                               source: "qrc:/qml/UI/Assets/humidity.png"
                             }
                         }
 
@@ -170,7 +170,7 @@ Item{
                                 }
                             }
                             Image {
-                                source: "qrc:/SmartGardenV2/UI/Assets/colon.png"
+                                source: "qrc:/qml/UI/Assets/colon.png"
                                 height: 20
                                 width:5
                                 horizontalAlignment: Text.AlignHCenter

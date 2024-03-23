@@ -21,13 +21,13 @@ Window {
             id: leftLoader
             Layout.fillHeight: true
             Layout.preferredWidth: mainWindow.width / 2
-            source: "./UI/HomeScreen/LeftSide/LeftSide.qml"
+            source: "qrc:/qml/UI/HomeScreen/LeftSide/LeftSide.qml"
         }
         Loader{
             id: rightLoader
             Layout.fillHeight: true
             Layout.preferredWidth: mainWindow.width / 2
-            source: "./UI/HomeScreen/RightSide/RightSide.qml"
+            source: "qrc:/qml/UI/HomeScreen/RightSide/RightSide.qml"
         }
     }
 }
